@@ -11,7 +11,8 @@ describe('reducer', () => {
         const nextState = reducer(initialState, action);
 
         expect(nextState).to.equal(fromJS({
-            entries: ['Trainspotting']
+            entries: ['Trainspotting'],
+            initialEntries: ['Trainspotting']
         }));
     });
 
@@ -24,6 +25,7 @@ describe('reducer', () => {
 
         expect(nextState).to.equal(fromJS({
             vote: {
+                round: 1,
                 pair: ['Trainspotting', '28 Days Later']
             },
             entries: []
@@ -33,17 +35,22 @@ describe('reducer', () => {
     it('handles VOTE', () => {
         const initialState = fromJS({
             vote: {
+                round: 1,
                 pair: ['Trainspotting', '28 Days Later']
             },
             entries: []
         });
-        const action = {type: 'VOTE', entry: 'Trainspotting'};
+        const action = {type: 'VOTE', entry: 'Trainspotting', clientId: 'voter1'};
         const nextState = reducer(initialState, action);
 
         expect(nextState).to.equal(fromJS({
             vote: {
+                round: 1,
                 pair: ['Trainspotting', '28 Days Later'],
-                tally: {Trainspotting: 1}
+                tally: {Trainspotting: 1},
+                votes: {
+                  voter1: 'Trainspotting'
+                }
             },
             entries: []
         }));
@@ -53,7 +60,8 @@ describe('reducer', () => {
         const action = {type: 'SET_ENTRIES', entries: ['Trainspotting']};
         const nextState = reducer(undefined, action);
         expect(nextState).to.equal(fromJS({
-            entries: ['Trainspotting']
+            entries: ['Trainspotting'],
+            initialEntries: ['Trainspotting']
         }));
     });
 
@@ -69,7 +77,8 @@ describe('reducer', () => {
         const finalState = actions.reduce(reducer, Map());
 
         expect(finalState).to.equal(fromJS({
-            winner: 'Trainspotting'
+            winner: 'Trainspotting',
+            initialEntries: ['Trainspotting', '28 Days Later']
         }));
     });
 
