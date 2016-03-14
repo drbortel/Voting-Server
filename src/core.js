@@ -11,7 +11,10 @@ export function setEntries(state, entries) {
 export function next(state, round = state.getIn(['vote', 'round'], 0)) {
     const entries = state.get('entries');
     return state.merge({
-        vote: Map({pair: entries.take(2)}),
+        vote: Map({
+          round: state.getIn(['vote', 'round'], 0) + 1,
+          pair: entries.take(2)
+        }),
         entries: entries.skip(2)
     });
 }
