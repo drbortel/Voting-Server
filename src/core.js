@@ -8,10 +8,6 @@ export function setEntries(state, entries) {
                 .set('initialEntries', list);
 }
 
-export function setEntries(state, entries) {
-    return state.set('entries', List(entries));
-}
-
 export function next(state, round = state.getIn(['vote', 'round'], 0)) {
     const entries = state.get('entries');
     return state.merge({
